@@ -118,3 +118,68 @@ final bool isPlaying;
     );
   }
 }
+class SongFooter extends StatelessWidget {
+  final String imageUrl;
+  final String songName;
+  final VoidCallback onPlayPausePressed;
+  final VoidCallback onNextPressed;
+  final VoidCallback onBackPressed;
+  final bool isPlaying;
+
+  const SongFooter({
+    required this.imageUrl,
+    required this.songName,
+    required this.onPlayPausePressed,
+    required this.onNextPressed,
+    required this.onBackPressed,
+    required this.isPlaying,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blueGrey,
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.network(
+              imageUrl,
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(width: 16.0),
+          Expanded(
+            child: Text(
+              songName,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.skip_previous, color: Colors.white),
+            onPressed: onBackPressed,
+          ),
+          IconButton(
+            icon: Icon(
+              isPlaying ? Icons.pause : Icons.play_arrow,
+              color: Colors.white,
+            ),
+            onPressed: onPlayPausePressed,
+          ),
+          IconButton(
+            icon: Icon(Icons.skip_next, color: Colors.white),
+            onPressed: onNextPressed,
+          ),
+        ],
+      ),
+    );
+  }
+}

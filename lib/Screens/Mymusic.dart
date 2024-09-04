@@ -23,29 +23,21 @@ class _MymusicState extends State<Mymusic> {
     "audio/Albumaty.Com_hmzh_nmrh_ana_altyb.mp3",
     "audio/Albumaty.Com_hmzh_nmrh_rayk.mp3",
     "audio/Albumaty.Com_hmzh_nmrh_ryah_alhyat.mp3",
-    "audio/Hamza Namira - Mesh Saleem _ حمزة نمرة - مش سليم.mp3"
+    "audio/Hamza Namira - Mesh Saleem _ حمزة نمرة - مش سليم.mp3",
+ "audio/Mawsltsh.Lehaga-Mostafa.Elnesr-MaTb3aa.Com.mp3",
+ "audio/The Weeknd - Blinding Lights (Official Video) (256  kbps) (shabakngy.com).mp3",
+ "audio/The-Weeknd-Die-For-You-Remix-ft-Ariana-Grande-(UmLandi.com).mp3",
+"audio/The_Weeknd_-_Save_Your_Tears_(Naijay.com).mp3",
+ "audio/مصطفي النسر - انا زعلتك _ Mostafa Elnesr - ANA Z3LTK (Official Audio).mp3",
+  "audio/مصطفي النسر - انا ليا طلب _ Mostafa Elnesr - ANA LYA TALAB.mp3",
+"audio/مصطفي النسر - لو معايا منه _ MOSTAFA ELNESR - LW M3AYA MNO.mp3"
   ];
   AudioPlayer audioPlayer = AudioPlayer();
-  List<bool> isPlayingList = List<bool>.generate(10, (index) => false);
   int? currentlyPlayingIndex;
-  Duration? lastPosition;
-
-  @override
-  void initState() {
-    super.initState();
-    audioPlayer.onPlayerStateChanged.listen((state) {
-      if (state == PlayerState.playing) {
-        setState(() {
-          isPlayingList[currentlyPlayingIndex!] = true;
-        });
-      } else if (state == PlayerState.stopped) {
-        setState(() {
-          isPlayingList[currentlyPlayingIndex!] = false;
-          lastPosition = Duration.zero; // Reset the last position
-        });
-      }
-    });
-  }
+  List<bool> isPlayingList = List<bool>.generate(18, (index) => false);
+  bool isPlaying = false;
+  String? imageUrl;
+  String? songName;
 
   void playLocalAsset(int index) async {
     if (currentlyPlayingIndex == index) {
@@ -56,11 +48,11 @@ class _MymusicState extends State<Mymusic> {
       }
       setState(() {
         isPlayingList[index] = !isPlayingList[index];
+        isPlaying = isPlayingList[index];
       });
       return;
     }
 
-    // Stop any currently playing song
     if (currentlyPlayingIndex != null) {
       await audioPlayer.stop();
       setState(() {
@@ -68,24 +60,32 @@ class _MymusicState extends State<Mymusic> {
       });
     }
 
-    // Play the new song
-    String audioPath = songs[index];
-    if (lastPosition != null && currentlyPlayingIndex == index) {
-      await audioPlayer.seek(lastPosition!);
-    } else {
-      await audioPlayer.setSourceAsset(audioPath);
-    }
+    await audioPlayer.setSourceAsset(songs[index]);
     await audioPlayer.resume();
 
     setState(() {
       currentlyPlayingIndex = index;
       isPlayingList[index] = true;
+      isPlaying = true;
+      imageUrl = 'https://play-lh.googleusercontent.com/QovZ-E3Uxm4EvjacN-Cv1LnjEv-x5SqFFB5BbhGIwXI_KorjFhEHahRZcXFC6P40Xg'; // Replace with your image URL logic
+      songName = '${songs[index].replaceAll("audio/", "").replaceAll(".mp3", "")}'; // Replace with your song name logic
     });
 
-    // Save the position when the audio is paused or stopped
-    audioPlayer.onPositionChanged.listen((position) {
-      lastPosition = position;
+    audioPlayer.onPlayerComplete.listen((_) {
+      playNextSong();
     });
+  }
+
+  void playNextSong() {
+    if (currentlyPlayingIndex != null ) {
+      playLocalAsset((currentlyPlayingIndex! + 1)%songs.length);
+    }
+  }
+
+  void playPreviousSong() {
+    if (currentlyPlayingIndex != null ) {
+      playLocalAsset((currentlyPlayingIndex! - 1)%songs.length);
+    }
   }
 
   @override
@@ -93,6 +93,7 @@ class _MymusicState extends State<Mymusic> {
     audioPlayer.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +196,7 @@ class _MymusicState extends State<Mymusic> {
           ),
           body: Center(
             child: ListView.builder(
-              itemCount: isPlayingList.length,
+              itemCount: songs.length,
               itemBuilder: (context, index) {
                 return SongTile(
                   songName: '${songs[index].replaceAll("audio/", "").replaceAll(".mp3", "")}',
@@ -212,6 +213,18 @@ class _MymusicState extends State<Mymusic> {
               physics: BouncingScrollPhysics(),
             ),
           ),
+          bottomNavigationBar: currentlyPlayingIndex != null
+              ? SongFooter(
+            imageUrl: imageUrl ?? '', // Handle null case
+            songName: songName ?? 'Unknown Song', // Handle null case
+            onPlayPausePressed: () {
+              playLocalAsset(currentlyPlayingIndex!);
+            },
+            onNextPressed: playNextSong,
+            onBackPressed: playPreviousSong,
+            isPlaying: isPlaying,
+          )
+              : SizedBox.shrink(), // Hide the footer if there's no song playing
         );
       },
     );
