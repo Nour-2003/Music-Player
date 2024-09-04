@@ -15,3 +15,6 @@ class WhiteTheme extends AppStates{
   WhiteTheme(bool themebool, Icon icon, ThemeData theme);
 
 }
+class BottomNavChangeState extends AppStates{
+
+}

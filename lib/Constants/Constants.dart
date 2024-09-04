@@ -58,12 +58,13 @@ class SongTile extends StatelessWidget {
   final String artistName;
   final String imageUrl;
   final VoidCallback onPlayPressed;
-
+final bool isPlaying;
   SongTile({
     required this.songName,
     required this.artistName,
     required this.imageUrl,
     required this.onPlayPressed,
+    required this.isPlaying,
   });
 
   @override
@@ -82,29 +83,34 @@ class SongTile extends StatelessWidget {
             ),
           ),
           SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
-            children: [
-              Text(
-                songName,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
+              children: [
+                Text(
+                  songName,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                artistName,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
+                Text(
+                  artistName,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Expanded(child: SizedBox(width: 20)),
           ElevatedButton(
             onPressed: onPlayPressed,
-            child: Icon(Icons.play_arrow),
+            child: isPlaying?Icon(CupertinoIcons.pause):Icon(Icons.play_arrow),
           ),
           SizedBox(width: 10),
         ],

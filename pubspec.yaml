@@ -37,7 +37,9 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
   conditional_builder_null_safety: ^0.0.6
-
+  http: ^1.2.2
+  url_launcher: ^6.0.9
+  audioplayers: ^6.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
@@ -65,10 +67,17 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-
+  assets:
+  - assets/audio/Ringtone.mp3
+  - assets/audio/مصطفي النسر - الندابة _ Mostafa Elnesr - Elnadaba (Official Audio).mp3
+  - assets/audio/01.Ya_Tara.mp3
+  - assets/audio/01 Starboy (feat. Daft Punk).mp3
+  - assets/audio/08.Albak_Ya_Hawl_Allah.mp3
+  - assets/audio/Albumaty.Com_ahmd_sad_akhtyaraty_-_mn_fylm_mstr_aks.mp3
+  - assets/audio/Albumaty.Com_hmzh_nmrh_ana_altyb.mp3
+  - assets/audio/Albumaty.Com_hmzh_nmrh_rayk.mp3
+  - assets/audio/Albumaty.Com_hmzh_nmrh_ryah_alhyat.mp3
+  - assets/audio/Hamza Namira - Mesh Saleem _ حمزة نمرة - مش سليم.mp3
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

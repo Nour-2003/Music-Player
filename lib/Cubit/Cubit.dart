@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_player/Screens/Mymusic.dart';
+import 'package:music_player/Screens/Watch.dart';
 
 import 'Cubit States.dart';
 
@@ -11,6 +13,36 @@ class AppCubit extends Cubit<AppStates>
   AppCubit() : super(InitialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
+  int counter =0;
+  List<Widget> Screens = [Mymusic(),Watch()];
+  // ThemeData theme = ThemeData.light();
+  int currentIndex = 0;
+  List<Widget> Titles = [
+    const Text(
+      'My Music',
+      style: TextStyle(fontSize: 25),
+    ),
+    const Text(
+      'Watch',
+      style: TextStyle(fontSize: 25),
+    ),];
+  void changeIndex(int index)
+  {
+    currentIndex = index;
+    if(index == 1)
+    {
+
+    }
+    else if(index == 2)
+    {
+
+    }
+    else if(index == 3)
+    {
+
+    }
+    emit(BottomNavChangeState());
+  }
   bool themebool = false;
   Icon icon = Icon(Icons.wb_sunny);
   ThemeData theme = ThemeData.light();
@@ -21,6 +53,11 @@ class AppCubit extends Cubit<AppStates>
       theme = ThemeData.dark().copyWith(
         drawerTheme: DrawerThemeData(
           backgroundColor: Color(0xFF091227),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Color(0xFF091227),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
         ),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(
@@ -48,6 +85,11 @@ class AppCubit extends Cubit<AppStates>
       theme = ThemeData.light().copyWith(
         drawerTheme: DrawerThemeData(
           backgroundColor: Colors.white, // Light background for the drawer
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white, // Light background for the bottom nav bar
+          selectedItemColor: Color(0xFF091227), // Dark selected item color for contrast in light mode
+          unselectedItemColor: Colors.grey, // Grey unselected item color for contrast in light mode
         ),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(
