@@ -20,7 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context,state){
         return Scaffold(
           body: AppCubit.get(context)
-              .Screens[AppCubit.get(context).currentIndex],
+              .screens[AppCubit.get(context).currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: AppCubit.get(context).currentIndex,
             onTap: (index) {
